@@ -1,22 +1,38 @@
-document.addEventListener("DOMContentLoaded", async function() {
+(async () => {
     await tsParticles.load("tsparticles", {
-        fpsLimit: 60,
         background: {
-            color: "#ffffff"
+            color: {
+                value: "#1a237e"
+            }
         },
         particles: {
+            number: {
+                value: 100,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
             color: {
-                value: "#0077b6"
+                value: "#ffffff"
             },
-            links: {
-                color: "#0077b6",
-                distance: 150,
+            shape: {
+                type: "circle"
+            },
+            opacity: {
+                value: 0.5,
+                random: false
+            },
+            size: {
+                value: 3,
+                random: true
+            },
+            line_linked: {
                 enable: true,
-                opacity: 0.5,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.4,
                 width: 1
-            },
-            collisions: {
-                enable: true
             },
             move: {
                 enable: true,
@@ -24,44 +40,35 @@ document.addEventListener("DOMContentLoaded", async function() {
                 direction: "none",
                 random: false,
                 straight: false,
-                outModes: {
-                    default: "bounce"
-                }
-            },
-            number: {
-                density: {
-                    enable: true,
-                    area: 800
-                },
-                value: 80
-            },
-            opacity: {
-                value: 0.5
-            },
-            shape: {
-                type: "circle"
-            },
-            size: {
-                value: { min: 1, max: 5 }
+                out_mode: "out",
+                bounce: false,
             }
         },
-        detectRetina: true,
         interactivity: {
+            detect_on: "canvas",
             events: {
-                onHover: {
+                onhover: {
                     enable: true,
                     mode: "grab"
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push"
                 },
                 resize: true
             },
             modes: {
                 grab: {
-                    distance: 200,
-                    links: {
+                    distance: 140,
+                    line_linked: {
                         opacity: 1
                     }
+                },
+                push: {
+                    particles_nb: 4
                 }
             }
-        }
+        },
+        retina_detect: true
     });
-});
+})();
