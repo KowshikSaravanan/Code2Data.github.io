@@ -12,7 +12,7 @@
 }
 
 .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
   padding: 1rem 2rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -37,5 +37,5 @@
 }
 
 .navbar-links a:hover {
-  color: #60a5fa;
+  color: #333333;
 }
