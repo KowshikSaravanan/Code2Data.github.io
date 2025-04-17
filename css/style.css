@@ -66,7 +66,7 @@ body {
     color: var(--white);
     padding: 0 5%;
     overflow: hidden;
-    background: linear-gradient(to right, #000000, #1f2937, #000000);
+    background: linear-gradient(to right, #1a237e, #303f9f, #1a237e);
 }
 
 .hero-background {
@@ -77,7 +77,7 @@ body {
     left: 0;
     z-index: 1;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(26, 35, 126, 0.3); /* Slight blue tint */
 }
 
 .cube {
@@ -90,6 +90,18 @@ body {
     transform-origin: top left;
     transform: scale(0) rotate(0deg) translate(-50%, -50%);
     animation: cube 12s ease-in forwards infinite;
+}
+
+.cube:nth-child(2) {
+    animation-delay: 2s;
+    left: 25vw;
+    top: 40vh;
+}
+
+.cube:nth-child(3) {
+    animation-delay: 4s;
+    left: 75vw;
+    top: 50vh;
 }
 
 .cube:nth-child(2n) {
