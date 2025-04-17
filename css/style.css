@@ -66,7 +66,7 @@ body {
     color: var(--white);
     padding: 0 5%;
     overflow: hidden;
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(to right, #000000, #1f2937, #000000);
 }
 
 .hero-background {
@@ -85,14 +85,14 @@ body {
     left: 45vw;
     width: 10px;
     height: 10px;
-    border: solid 1px rgba(255, 255, 255, 0.2);
+    border: solid 1px rgba(255, 255, 255, 0.1);
     transform-origin: top left;
     transform: scale(0) rotate(0deg) translate(-50%, -50%);
     animation: cube 12s ease-in forwards infinite;
 }
 
 .cube:nth-child(2n) {
-    border-color: rgba(82, 179, 255, 0.2);
+    border-color: rgba(128, 128, 128, 0.2);
 }
 
 .cube:nth-child(2) {
@@ -141,17 +141,18 @@ body {
     z-index: 2;
     max-width: 800px;
     margin: 0 auto;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.4);
     padding: 2rem;
     border-radius: 15px;
     backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(45deg, #60a5fa, #3b82f6);
+    background: linear-gradient(45deg, #ffffff, #cccccc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -166,19 +167,21 @@ body {
 .cta-button {
     display: inline-block;
     padding: 1rem 2rem;
-    background: linear-gradient(45deg, #3b82f6, #2563eb);
+    background: linear-gradient(45deg, #1f2937, #000000);
     color: var(--white);
     text-decoration: none;
     border-radius: 30px;
     font-weight: bold;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cta-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
-    background: linear-gradient(45deg, #2563eb, #1d4ed8);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(45deg, #000000, #1f2937);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Topics Section */
