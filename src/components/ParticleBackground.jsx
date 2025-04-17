@@ -7,9 +7,10 @@ export const ParticleBackground = () => {
       options={{
         background: {
           color: {
-            value: "#0d47a1",
+            value: "#1a237e", // Deep blue color
           },
         },
+        fpsLimit: 60,
         particles: {
           color: {
             value: "#ffffff",
@@ -24,14 +25,31 @@ export const ParticleBackground = () => {
           move: {
             enable: true,
             speed: 2,
-          },
-          size: {
-            value: 1,
+            direction: "none",
+            random: false,
+            straight: false,
+            outModes: {
+              default: "bounce",
+            },
           },
           number: {
-            value: 100,
+            value: 80,
+            density: {
+              enable: true,
+              area: 800,
+            },
+          },
+          opacity: {
+            value: 0.5,
+          },
+          shape: {
+            type: "circle",
+          },
+          size: {
+            value: { min: 1, max: 3 },
           },
         },
+        detectRetina: true,
       }}
     />
   );
