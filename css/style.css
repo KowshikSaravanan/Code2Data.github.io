@@ -20,16 +20,14 @@ body {
 
 /* Navbar */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background: var(--white);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     position: fixed;
-    width: 100%;
     top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem 2rem;
     z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .logo a {
@@ -218,16 +216,30 @@ footer {
 }
 
 /* Machine Learning Page Specific Styles */
+.container {
+    padding-top: 120px; /* Increased padding to ensure content starts below navbar */
+    min-height: 100vh;
+}
+
 .ml-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 4rem 2rem 2rem 2rem; /* Increased top padding */
+    padding: 0 2rem;
 }
 
 .ml-content h1 {
+    margin-top: 0;
     margin-bottom: 2rem;
     color: #2c3e50;
     font-size: 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure all content is above any background elements */
+.ml-content {
+    position: relative;
+    z-index: 2;
 }
 
 .ml-content .intro {
@@ -235,11 +247,6 @@ footer {
     line-height: 1.6;
     margin-bottom: 2rem;
     color: #666;
-}
-
-/* Ensure proper spacing with navbar */
-.container {
-    padding-top: 80px; /* Add space below fixed navbar */
 }
 
 .ml-content h2 {
