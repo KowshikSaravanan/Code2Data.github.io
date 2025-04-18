@@ -200,6 +200,84 @@ footer {
     border-top: 1px solid rgba(255,255,255,0.1);
 }
 
+/* Machine Learning Page Specific Styles */
+.ml-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.ml-content h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.5rem;
+}
+
+.ml-content h2 {
+    color: #34495e;
+    font-size: 2rem;
+    margin: 2rem 0 1rem;
+    padding-left: 1rem;
+    border-left: 4px solid #3498db;
+}
+
+.ml-content h3 {
+    color: #2980b9;
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+}
+
+.ml-content p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.ml-content .intro {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.ml-content ul {
+    list-style-type: none;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.ml-content ul li {
+    margin: 0.5rem 0;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.ml-content ul li:before {
+    content: "•";
+    color: #3498db;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.subsection {
+    background: #fff;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Icon Styles */
+.ml-content i {
+    margin-right: 0.5rem;
+    color: #3498db;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .nav-links {
@@ -212,5 +290,21 @@ footer {
     
     .hero p {
         font-size: 1rem;
+    }
+
+    .ml-content {
+        padding: 1rem;
+    }
+
+    .ml-content h1 {
+        font-size: 2rem;
+    }
+
+    .ml-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .ml-content h3 {
+        font-size: 1.2rem;
     }
 }
