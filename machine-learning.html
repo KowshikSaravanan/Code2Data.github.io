@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning - Code2Data</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#tutorials">Tutorials</a></li>
+            <li><a href="#topics">Topics</a></li>
+            <li><a href="#videos">Videos</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="ml-content">
+            <h1><i class="fas fa-brain"></i> Machine Learning</h1>
+            <p class="intro">Machine Learning is a subset of AI that enables systems to learn patterns from data and make decisions with minimal human intervention. It includes various paradigms such as supervised, unsupervised, deep, and reinforcement learning.</p>
+
+            <section id="data-preprocessing">
+                <h2><i class="fas fa-graduation-cap"></i> Data Preprocessing</h2>
+                <p>Prepares raw data for modeling.</p>
+                <ul>
+                    <li>Data Cleaning - Handle missing values, outliers, and inconsistencies.</li>
+                    <li>Feature Scaling - Normalize features (StandardScaler, MinMax).</li>
+                    <li>Feature Engineering - Create new features from raw data.</li>
+                    <li>Handling Categorical Variables - One-hot and label encoding.</li>
+                    <li>Transformation - Log, Box-Cox – reduce skewness.</li>
+                    <li>Dimensionality Reduction - PCA, t-SNE, UMAP.</li>
+                    <li>Data Sampling - Address imbalanced classes via under/oversampling.</li>
+                </ul>
+            </section>
+            
+            <section id="supervised-learning">
+                <h2><i class="fas fa-graduation-cap"></i> Supervised Learning</h2>
+                <p>Learning from labeled data (input features with known output labels).</p>
+
+                <div class="subsection">
+                    <h3>Regression</h3>
+                    <p>Predicts continuous output variables.</p>
+                    <ul>
+                        <li>Linear Regression</li>
+                        <li>Polynomial Regression</li>
+                        <li>Ridge Regression</li>
+                        <li>Lasso Regression</li>
+                        <li>ElasticNet Regression</li>
+                        <li>Support Vector Regression (SVR)</li>
+                        <li>Decision Tree Regression</li>
+                        <li>Random Forest Regression</li>
+                        <li>Gradient Boosting Regression</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Classification</h3>
+                    <p>Predicts discrete labels (e.g., Yes/No, Category A/B/C).</p>
+                    <ul>
+                        <li>Logistic Regression</li>
+                        <li>Support Vector Machine (SVM)</li>
+                        <li>Decision Trees</li>
+                        <li>Naive Bayes</li>
+                        <li>k-Nearest Neighbors (kNN)</li>
+                        <li>Random Forest</li>
+                        <li>Gradient Boosting Machines (GBM)</li>
+                        <li>Neural Networks</li>
+                        <li>Linear Discriminant Analysis (LDA)</li>
+                        <li>Quadratic Discriminant Analysis (QDA)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="unsupervised-learning">
+                <h2><i class="fas fa-project-diagram"></i> Unsupervised Learning</h2>
+                <p>Discovers hidden patterns from unlabeled data.</p>
+
+                <div class="subsection">
+                    <h3>Clustering</h3>
+                    <ul>
+                        <li>K-Means</li>
+                        <li>Hierarchical Clustering</li>
+                        <li>DBSCAN</li>
+                        <li>Gaussian Mixture Models (GMM)</li>
+                        <li>Self Organizing Maps (SOMs)</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>Dimensionality Reduction</h3>
+                    <ul>
+                        <li>PCA (Principal Component Analysis)</li>
+                        <li>t-SNE</li>
+                        <li>LDA (Linear Discriminant Analysis)</li>
+                        <li>Autoencoders</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="deep-learning">
+                <h2><i class="fas fa-network-wired"></i> Deep Learning</h2>
+                <p>Subset of ML using deep neural networks with many layers.</p>
+                <ul>
+                    <li>Artificial Neural Networks (ANNs)</li>
+                    <li>Convolutional Neural Networks (CNNs)</li>
+                    <li>Recurrent Neural Networks (RNNs)</li>
+                    <li>Long Short-Term Memory (LSTM)</li>
+                    <li>Gated Recurrent Units (GRUs)</li>
+                    <li>GANs (Generative Adversarial Networks)</li>
+                    <li>Transformers</li>
+                    <li>Self-Attention</li>
+                </ul>
+            </section>
+
+            <section id="reinforcement-learning">
+                <h2><i class="fas fa-robot"></i> Reinforcement Learning</h2>
+                <p>Training agents through rewards and penalties in an environment.</p>
+                <ul>
+                    <li>Q-Learning</li>
+                    <li>Deep Q-Networks (DQNs)</li>
+                    <li>SARSA</li>
+                    <li>Actor-Critic Methods</li>
+                    <li>Policy Gradients</li>
+                    <li>Temporal Difference Learning</li>
+                </ul>
+            </section>
+
+            <section id="model-evaluation">
+                <h2><i class="fas fa-chart-line"></i> Model Evaluation and Selection</h2>
+                <ul>
+                    <li>Cross Validation</li>
+                    <li>Hyperparameter Tuning</li>
+                    <li>Regularization</li>
+                    <li>Metrics</li>
+                    <li>Model Selection Criteria</li>
+                </ul>
+            </section>
+
+            <section id="applications">
+                <h2><i class="fas fa-laptop-code"></i> Specific Applications</h2>
+                <ul>
+                    <li>Natural Language Processing (NLP)</li>
+                    <li>Computer Vision</li>
+                    <li>Time Series Analysis</li>
+                    <li>Recommendation Systems</li>
+                    <li>Robotics</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+</body>
+</html>
