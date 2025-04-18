@@ -78,11 +78,17 @@ body {
 .hero h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
+    background-color: var(--text-color);
+    padding: 1rem;
+    border-radius: 8px;
 }
 
 .hero p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
+    background-color: var(--text-color);
+    padding: 1rem;
+    border-radius: 8px;
 }
 
 .cta-button {
