@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Preprocessing - Code2Data</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="machine-learning.html">Back to ML</a></li>
+            <li><a href="#data-cleaning">Data Cleaning</a></li>
+            <li><a href="#feature-scaling">Feature Scaling</a></li>
+            <li><a href="#feature-engineering">Feature Engineering</a></li>
+            <li><a href="#categorical-variables">Categorical Variables</a></li>
+            <li><a href="#transformation">Transformation</a></li>
+            <li><a href="#dimensionality-reduction">Dimensionality Reduction</a></li>
+            <li><a href="#data-sampling">Data Sampling</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Data Cleaning Section -->
+        <section id="data-cleaning" class="preprocessing-section">
+            <h2><i class="fas fa-broom"></i> Data Cleaning</h2>
+            <p class="intro">Data cleaning is like tidying up your room - we need to handle missing items (values), remove unusual items (outliers), and fix inconsistencies in our data.</p>
+            
+            <div class="example-box">
+                <h3>Missing Values</h3>
+                <p>Imagine a survey where some people skipped questions. We can:</p>
+                <ul>
+                    <li>Remove incomplete responses (drop rows)</li>
+                    <li>Fill with average values (mean imputation)</li>
+                    <li>Use most common values (mode imputation)</li>
+                </ul>
+
+                <div class="code-example">
+                    <h4>Python Example:</h4>
+                    <pre><code class="language-python">
+import pandas as pd
+import numpy as np
+
+# Load sample dataset
+df = pd.read_csv('customer_data.csv')
+
+# Check missing values
+print("Missing values:\n", df.isnull().sum())
+
+# Method 1: Drop rows with missing values
+df_cleaned = df.dropna()
+
+# Method 2: Fill missing values with mean
+df['age'] = df['age'].fillna(df['age'].mean())
+
+# Method 3: Fill missing values with mode
+df['category'] = df['category'].fillna(df['category'].mode()[0])
+                    </code></pre>
+                </div>
+
+                <div class="visualization">
+                    <img src="images/missing_values_diagram.png" alt="Missing Values Handling Diagram">
+                    <p class="caption">Different approaches to handling missing values</p>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h3>Outliers</h3>
+                <p>Outliers are unusual values that don't follow the normal pattern. Like finding a 150-year-old person in age data.</p>
+                
+                <div class="code-example">
+                    <h4>Python Example:</h4>
+                    <pre><code class="language-python">
+# Detect outliers using IQR method
+Q1 = df['age'].quantile(0.25)
+Q3 = df['age'].quantile(0.75)
+IQR = Q3 - Q1
+
+# Define outlier boundaries
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Remove outliers
+df_no_outliers = df[(df['age'] >= lower_bound) & 
+                    (df['age'] <= upper_bound)]
+                    </code></pre>
+                </div>
+            </div>
+
+            <div class="example-box">
+                <h3>Inconsistencies</h3>
+                <p>Fix data that doesn't match expected formats or values.</p>
+                
+                <div class="code-example">
+                    <h4>Python Example:</h4>
+                    <pre><code class="language-python">
+# Fix inconsistent categories
+df['category'] = df['category'].str.lower()
+df['category'] = df['category'].replace({
+    'cat1': 'category_1',
+    'cat2': 'category_2'
+})
+
+# Fix date format inconsistencies
+df['date'] = pd.to_datetime(df['date'])
+                    </code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add other sections similarly -->
+        
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>

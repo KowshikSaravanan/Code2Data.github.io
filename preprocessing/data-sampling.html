@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sampling - Code2Data</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../machine-learning.html">Back to ML</a></li>
+            <li><a href="#sampling-techniques">Sampling Techniques</a></li>
+            <li><a href="#implementation">Implementation</a></li>
+            <li><a href="#considerations">Considerations</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="content">
+            <h1>Data Sampling</h1>
+            <p class="intro">Data sampling is a crucial technique in machine learning for handling imbalanced datasets and ensuring representative data distribution. It involves selecting subsets of data points to improve model training and performance.</p>
+
+            <section id="sampling-techniques">
+                <h2>Common Sampling Techniques</h2>
+                
+                <div class="technique">
+                    <h3>Undersampling</h3>
+                    <p>Reduces the number of samples in the majority class to match the minority class.</p>
+                    <ul>
+                        <li>Random Undersampling</li>
+                        <li>Tomek Links</li>
+                        <li>Neighborhood Cleaning Rule (NCR)</li>
+                        <li>Edited Nearest Neighbors (ENN)</li>
+                        <li>One-Sided Selection (OSS)</li>
+                    </ul>
+                </div>
+
+                <div class="technique">
+                    <h3>Oversampling</h3>
+                    <p>Increases the number of samples in the minority class to match the majority class.</p>
+                    <ul>
+                        <li>Random Oversampling</li>
+                        <li>SMOTE (Synthetic Minority Over-sampling Technique)</li>
+                        <li>ADASYN (Adaptive Synthetic)</li>
+                        <li>Borderline-SMOTE</li>
+                        <li>SVM-SMOTE</li>
+                    </ul>
+                </div>
+
+                <div class="technique">
+                    <h3>Hybrid Methods</h3>
+                    <p>Combines both undersampling and oversampling techniques.</p>
+                    <ul>
+                        <li>SMOTETomek</li>
+                        <li>SMOTEENN</li>
+                        <li>Balanced Random Forest</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="implementation">
+                <h2>Implementation Example</h2>
+                <pre><code class="language-python">
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
+from imblearn.pipeline import Pipeline
+
+# Define sampling strategy
+over = SMOTE(sampling_strategy=0.5)
+under = RandomUnderSampler(sampling_strategy=0.5)
+
+# Create pipeline
+pipeline = Pipeline([
+    ('over', over),
+    ('under', under)
+])
+
+# Apply sampling
+X_resampled, y_resampled = pipeline.fit_resample(X, y)
+                </code></pre>
+            </section>
+
+            <section id="considerations">
+                <h2>Key Considerations</h2>
+                <ul>
+                    <li>Data Distribution - Understand original class distribution</li>
+                    <li>Sample Size - Balance between information loss and computational efficiency</li>
+                    <li>Feature Space - Consider feature relationships when generating synthetic samples</li>
+                    <li>Cross-Validation - Use stratified sampling in cross-validation</li>
+                    <li>Domain Knowledge - Incorporate domain expertise in sampling strategy</li>
+                </ul>
+            </section>
+
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Always split data before applying sampling techniques</li>
+                    <li>Validate results with multiple metrics</li>
+                    <li>Consider the nature of your data and problem</li>
+                    <li>Document sampling rationale and methodology</li>
+                    <li>Monitor for potential data leakage</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>

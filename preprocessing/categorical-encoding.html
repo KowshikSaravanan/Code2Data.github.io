@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorical Encoding - Code2Data</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../machine-learning.html">Back to ML</a></li>
+            <li><a href="feature-engineering.html">Previous: Feature Engineering</a></li>
+            <li><a href="dimensionality-reduction.html">Next: Dimensionality Reduction</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="preprocessing-content">
+            <h1><i class="fas fa-exchange-alt"></i> Categorical Encoding</h1>
+            
+            <section class="intro">
+                <p>Categorical encoding is the process of converting categorical variables into numerical format that machine learning algorithms can process. Different encoding techniques are suitable for different scenarios, depending on the nature of the categorical variable and the machine learning algorithm being used.</p>
+            </section>
+
+            <section id="ordinal-encoding">
+                <h2>Ordinal Encoding</h2>
+                <p>Suitable for categorical variables with a natural order (e.g., education levels, size categories).</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from sklearn.preprocessing import OrdinalEncoder
+import pandas as pd
+
+# Sample data
+data = pd.DataFrame({
+    'size': ['small', 'medium', 'large', 'medium', 'small'],
+    'education': ['high school', 'bachelors', 'masters', 'phd', 'bachelors']
+})
+
+# Simple ordinal encoding
+ordinal_encoder = OrdinalEncoder()
+encoded = ordinal_encoder.fit_transform(data)
+encoded_df = pd.DataFrame(
+    encoded,
+    columns=data.columns
+)
+
+print("Ordinal Encoded Data:\n", encoded_df)
+
+# Custom ordinal encoding with specified order
+size_mapping = {'small': 0, 'medium': 1, 'large': 2}
+education_mapping = {
+    'high school': 0,
+    'bachelors': 1,
+    'masters': 2,
+    'phd': 3
+}
+
+data['size_encoded'] = data['size'].map(size_mapping)
+data['education_encoded'] = data['education'].map(education_mapping)
+
+print("\nCustom Ordinal Encoding:\n", data)
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="one-hot-encoding">
+                <h2>One-Hot Encoding</h2>
+                <p>Creates binary columns for each category. Best for nominal variables with no inherent order.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
+
+# Sample data
+data = pd.DataFrame({
+    'color': ['red', 'blue', 'green', 'red', 'blue'],
+    'city': ['NY', 'LA', 'SF', 'Chicago', 'NY']
+})
+
+# One-hot encoding using sklearn
+onehot = OneHotEncoder(sparse=False)
+encoded = onehot.fit_transform(data)
+feature_names = onehot.get_feature_names_out(data.columns)
+onehot_df = pd.DataFrame(
+    encoded,
+    columns=feature_names
+)
+
+print("One-Hot Encoded Data:\n", onehot_df)
+
+# Using pandas get_dummies
+pd_onehot = pd.get_dummies(data, prefix=data.columns)
+print("\nPandas get_dummies:\n", pd_onehot)
+
+# Handling new categories in test data
+def one_hot_encode_with_unknown(train_data, test_data, column):
+    # Get all unique categories from training data
+    train_categories = set(train_data[column].unique())
+    
+    # One-hot encode both datasets
+    train_encoded = pd.get_dummies(train_data[column], prefix=column)
+    test_encoded = pd.get_dummies(test_data[column], prefix=column)
+    
+    # Add missing columns in test data
+    for cat in train_categories:
+        col_name = f"{column}_{cat}"
+        if col_name not in test_encoded.columns:
+            test_encoded[col_name] = 0
+            
+    # Remove columns in test data that weren't in training
+    test_encoded = test_encoded[train_encoded.columns]
+    
+    return train_encoded, test_encoded
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="label-encoding">
+                <h2>Label Encoding</h2>
+                <p>Assigns a unique integer to each category. Suitable for tree-based models.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from sklearn.preprocessing import LabelEncoder
+
+# Sample data
+data = pd.DataFrame({
+    'category': ['A', 'B', 'C', 'A', 'B', 'D']
+})
+
+# Label encoding
+label_encoder = LabelEncoder()
+data['category_encoded'] = label_encoder.fit_transform(data['category'])
+
+print("Label Encoded Data:\n", data)
+
+# Inverse transform
+original_labels = label_encoder.inverse_transform(data['category_encoded'])
+print("\nOriginal Categories:", original_labels)
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="target-encoding">
+                <h2>Target Encoding</h2>
+                <p>Replaces categories with the mean target value for that category. Useful for high-cardinality features.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+# Simple target encoding
+def target_encode(train_data, test_data, column, target, alpha=5):
+    # Calculate global mean
+    global_mean = train_data[target].mean()
+    
+    # Calculate means per category
+    category_means = train_data.groupby(column)[target].agg(['mean', 'count'])
+    
+    # Apply smoothing
+    smoothed_means = (
+        category_means['count'] * category_means['mean'] + 
+        alpha * global_mean
+    ) / (category_means['count'] + alpha)
+    
+    # Encode train and test data
+    train_encoded = train_data[column].map(smoothed_means)
+    test_encoded = test_data[column].map(smoothed_means).fillna(global_mean)
+    
+    return train_encoded, test_encoded
+
+# Example usage
+train_data = pd.DataFrame({
+    'category': ['A', 'B', 'A', 'C', 'B', 'A'],
+    'target': [1, 0, 1, 0, 1, 1]
+})
+
+test_data = pd.DataFrame({
+    'category': ['A', 'B', 'D', 'C']
+})
+
+train_encoded, test_encoded = target_encode(
+    train_data, 
+    test_data, 
+    'category', 
+    'target'
+)
+
+print("Train Encoded:\n", train_encoded)
+print("\nTest Encoded:\n", test_encoded)
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="frequency-encoding">
+                <h2>Frequency Encoding</h2>
+                <p>Replaces categories with their frequency of occurrence.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+def frequency_encode(train_data, test_data, column):
+    # Calculate frequencies on training data
+    freq_encoding = train_data[column].value_counts(normalize=True)
+    
+    # Encode both datasets
+    train_encoded = train_data[column].map(freq_encoding)
+    test_encoded = test_data[column].map(freq_encoding).fillna(0)
+    
+    return train_encoded, test_encoded
+
+# Example usage
+train_data = pd.DataFrame({
+    'category': ['A', 'B', 'A', 'C', 'B', 'A']
+})
+
+test_data = pd.DataFrame({
+    'category': ['A', 'B', 'D', 'C']
+})
+
+train_encoded, test_encoded = frequency_encode(
+    train_data, 
+    test_data, 
+    'category'
+)
+
+print("Train Frequency Encoded:\n", train_encoded)
+print("\nTest Frequency Encoded:\n", test_encoded)
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="binary-encoding">
+                <h2>Binary Encoding</h2>
+                <p>Converts categories into binary code then splits the bits into separate columns. Efficient for high-cardinality features.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from category_encoders import BinaryEncoder
+
+# Sample data
+data = pd.DataFrame({
+    'category': ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+})
+
+# Binary encoding
+binary_encoder = BinaryEncoder(cols=['category'])
+binary_encoded = binary_encoder.fit_transform(data)
+
+print("Binary Encoded Data:\n", binary_encoded)
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Choose encoding based on the nature of the categorical variable (ordinal vs nominal)</li>
+                    <li>Consider the number of unique categories (cardinality)</li>
+                    <li>Be mindful of the curse of dimensionality with one-hot encoding</li>
+                    <li>Handle unknown categories in test data</li>
+                    <li>Consider the impact on model interpretability</li>
+                    <li>Use cross-validation to compare different encoding strategies</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>

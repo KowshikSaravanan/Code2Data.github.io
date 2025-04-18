@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Scaling - Code2Data</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../machine-learning.html">Back to ML</a></li>
+            <li><a href="data-cleaning.html">Previous: Data Cleaning</a></li>
+            <li><a href="feature-engineering.html">Next: Feature Engineering</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="preprocessing-content">
+            <h1><i class="fas fa-balance-scale"></i> Feature Scaling</h1>
+            
+            <section class="intro">
+                <p>Feature scaling is a technique used to standardize the range of independent variables or features of data. It's crucial when your features have different ranges. For example, age (0-100) and income (0-1,000,000) are on very different scales.</p>
+            </section>
+
+            <section id="standardization">
+                <h2>Standardization (Standard Scaling)</h2>
+                <div class="concept-explanation">
+                    <h3>What is Standardization?</h3>
+                    <p>Standardization transforms features to have zero mean and unit variance. It's calculated as: z = (x - μ) / σ</p>
+                    
+                    <div class="visualization">
+                        <!-- <img src="../images/standardization.png" alt="Standardization Visualization"> -->
+                        <p class="caption">Before and after standardization</p>
+                    </div>
+
+                    <div class="code-example">
+                        <h4>Python Implementation:</h4>
+                        <pre><code class="language-python">
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
+import numpy as np
+
+# Sample dataset
+data = pd.DataFrame({
+    'age': [25, 30, 45, 60, 35],
+    'income': [30000, 45000, 80000, 120000, 55000]
+})
+
+# Initialize the scaler
+scaler = StandardScaler()
+
+# Fit and transform the data
+scaled_data = scaler.fit_transform(data)
+scaled_df = pd.DataFrame(scaled_data, columns=data.columns)
+
+print("Original Data:\n", data)
+print("\nScaled Data:\n", scaled_df)
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="normalization">
+                <h2>Normalization (Min-Max Scaling)</h2>
+                <div class="concept-explanation">
+                    <h3>What is Normalization?</h3>
+                    <p>Normalization scales features to a fixed range, typically 0 to 1. Formula: x_new = (x - x_min) / (x_max - x_min)</p>
+
+                    <div class="visualization">
+                        <img src="../images/normalization.png" alt="Normalization Visualization">
+                        <p class="caption">Before and after normalization</p>
+                    </div>
+
+                    <div class="code-example">
+                        <h4>Python Implementation:</h4>
+                        <pre><code class="language-python">
+from sklearn.preprocessing import MinMaxScaler
+
+# Initialize the scaler
+min_max_scaler = MinMaxScaler()
+
+# Fit and transform the data
+normalized_data = min_max_scaler.fit_transform(data)
+normalized_df = pd.DataFrame(normalized_data, columns=data.columns)
+
+print("Original Data:\n", data)
+print("\nNormalized Data:\n", normalized_df)
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="robust-scaling">
+                <h2>Robust Scaling</h2>
+                <div class="concept-explanation">
+                    <h3>What is Robust Scaling?</h3>
+                    <p>Robust scaling uses statistics that are robust to outliers. It scales features using the IQR (Interquartile Range).</p>
+
+                    <div class="code-example">
+                        <h4>Python Implementation:</h4>
+                        <pre><code class="language-python">
+from sklearn.preprocessing import RobustScaler
+
+# Initialize the scaler
+robust_scaler = RobustScaler()
+
+# Fit and transform the data
+robust_scaled_data = robust_scaler.fit_transform(data)
+robust_scaled_df = pd.DataFrame(robust_scaled_data, columns=data.columns)
+
+print("Original Data:\n", data)
+print("\nRobust Scaled Data:\n", robust_scaled_df)
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="when-to-use">
+                <h2>When to Use Each Scaling Method</h2>
+                <div class="usage-guide">
+                    <table>
+                        <tr>
+                            <th>Scaling Method</th>
+                            <th>When to Use</th>
+                            <th>Advantages</th>
+                            <th>Disadvantages</th>
+                        </tr>
+                        <tr>
+                            <td>Standardization</td>
+                            <td>
+                                <ul>
+                                    <li>When data is normally distributed</li>
+                                    <li>For algorithms assuming zero mean and unit variance</li>
+                                    <li>PCA, Neural Networks, SVM</li>
+                                </ul>
+                            </td>
+                            <td>Handles outliers well</td>
+                            <td>May not preserve zero values</td>
+                        </tr>
+                        <tr>
+                            <td>Normalization</td>
+                            <td>
+                                <ul>
+                                    <li>When you need bounded values</li>
+                                    <li>Neural network outputs</li>
+                                    <li>Image processing</li>
+                                </ul>
+                            </td>
+                            <td>Preserves zero values</td>
+                            <td>Sensitive to outliers</td>
+                        </tr>
+                        <tr>
+                            <td>Robust Scaling</td>
+                            <td>
+                                <ul>
+                                    <li>When data has outliers</li>
+                                    <li>Small datasets</li>
+                                    <li>Non-normal distributions</li>
+                                </ul>
+                            </td>
+                            <td>Resistant to outliers</td>
+                            <td>May not be suitable for normal distributions</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <section id="practical-example">
+                <h2>Complete Practical Example</h2>
+                <div class="code-example">
+                    <h4>Comparing Different Scaling Methods:</h4>
+                    <pre><code class="language-python">
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+import matplotlib.pyplot as plt
+
+# Create sample data with outliers
+np.random.seed(42)
+data = pd.DataFrame({
+    'feature1': np.concatenate([np.random.normal(0, 1, 97), [10, -10, 8]]),
+    'feature2': np.concatenate([np.random.normal(100, 10, 97), [200, 50, 180]])
+})
+
+# Initialize scalers
+scalers = {
+    'Standard': StandardScaler(),
+    'MinMax': MinMaxScaler(),
+    'Robust': RobustScaler()
+}
+
+# Apply each scaling method
+scaled_data = {}
+for name, scaler in scalers.items():
+    scaled_data[name] = pd.DataFrame(
+        scaler.fit_transform(data),
+        columns=data.columns
+    )
+
+# Plotting
+fig, axes = plt.subplots(2, 2, figsize=(15, 10))
+fig.suptitle('Comparison of Scaling Methods')
+
+# Original data
+data.boxplot(ax=axes[0, 0])
+axes[0, 0].set_title('Original Data')
+
+# Scaled data
+for idx, (name, scaled_df) in enumerate(scaled_data.items()):
+    scaled_df.boxplot(ax=axes[(idx+1)//2, (idx+1)%2])
+    axes[(idx+1)//2, (idx+1)%2].set_title(f'{name} Scaling')
+
+plt.tight_layout()
+plt.show()
+                    </code></pre>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>

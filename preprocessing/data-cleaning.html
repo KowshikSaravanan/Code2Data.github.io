@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Cleaning - Code2Data</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../machine-learning.html">Back to ML</a></li>
+            <li><a href="feature-scaling.html">Next: Feature Scaling</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="preprocessing-content">
+            <h1><i class="fas fa-broom"></i> Data Cleaning</h1>
+            
+            <section class="intro">
+                <p>Data cleaning is the process of fixing or removing incorrect, corrupted, incorrectly formatted, duplicate, or incomplete data within a dataset. Think of it as tidying up your digital workspace before starting your analysis.</p>
+            </section>
+
+            <section id="missing-values">
+                <h2>Handling Missing Values</h2>
+                <div class="concept-explanation">
+                    <h3>What are Missing Values?</h3>
+                    <p>Missing values are like empty spaces in your dataset. Imagine taking a survey where some people skipped questions - those blank responses are missing values.</p>
+                    
+                    <div class="visualization">
+                        <!-- <img src="../images/missing_values.png" alt="Missing Values Visualization"> -->
+                        <p class="caption">Different types of missing values in a dataset</p>
+                    </div>
+
+                    <h3>Common Solutions:</h3>
+                    <ul>
+                        <li><strong>Deletion:</strong> Remove rows with missing values (when data is missing randomly)</li>
+                        <li><strong>Mean/Median Imputation:</strong> Fill with average values (for numerical data)</li>
+                        <li><strong>Mode Imputation:</strong> Fill with most common values (for categorical data)</li>
+                        <li><strong>Predictive Imputation:</strong> Use machine learning to predict missing values</li>
+                    </ul>
+
+                    <div class="code-example">
+                        <h4>Python Implementation:</h4>
+                        <pre><code class="language-python">
+import pandas as pd
+import numpy as np
+from sklearn.impute import SimpleImputer
+
+# Load sample dataset
+df = pd.read_csv('customer_data.csv')
+
+# Check missing values
+print("Missing values in each column:")
+print(df.isnull().sum())
+
+# Method 1: Remove rows with missing values
+df_cleaned = df.dropna()
+
+# Method 2: Fill numerical missing values with mean
+imputer = SimpleImputer(strategy='mean')
+df['age'] = imputer.fit_transform(df[['age']])
+
+# Method 3: Fill categorical missing values with mode
+df['category'] = df['category'].fillna(df['category'].mode()[0])
+
+# Method 4: Fill with custom value
+df['status'] = df['status'].fillna('Unknown')
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outliers">
+                <h2>Handling Outliers</h2>
+                <div class="concept-explanation">
+                    <h3>What are Outliers?</h3>
+                    <p>Outliers are data points that differ significantly from other observations. Like finding a 150-year-old person in age data or a $1 million coffee price.</p>
+
+                    <div class="visualization">
+                        <img src="../images/outliers.png" alt="Outliers Visualization">
+                        <p class="caption">Identifying outliers using boxplot method</p>
+                    </div>
+
+                    <h3>Detection Methods:</h3>
+                    <ul>
+                        <li><strong>IQR Method:</strong> Using box plots and interquartile range</li>
+                        <li><strong>Z-Score Method:</strong> Using standard deviations from mean</li>
+                        <li><strong>Modified Z-Score:</strong> More robust version of Z-score</li>
+                        <li><strong>Isolation Forest:</strong> Machine learning approach</li>
+                    </ul>
+
+                    <div class="code-example">
+                        <h4>Python Implementation:</h4>
+                        <pre><code class="language-python">
+import pandas as pd
+import numpy as np
+from scipy import stats
+
+# IQR Method
+def remove_outliers_iqr(df, column):
+    Q1 = df[column].quantile(0.25)
+    Q3 = df[column].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    return df[(df[column] >= lower_bound) & 
+             (df[column] <= upper_bound)]
+
+# Z-Score Method
+def remove_outliers_zscore(df, column, threshold=3):
+    z_scores = np.abs(stats.zscore(df[column]))
+    return df[z_scores < threshold]
+
+# Example usage
+df_no_outliers = remove_outliers_iqr(df, 'price')
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="inconsistencies">
+                <h2>Fixing Inconsistencies</h2>
+                <div class="concept-explanation">
+                    <h3>What are Inconsistencies?</h3>
+                    <p>Data inconsistencies are like using different spellings or formats for the same thing: "NY", "New York", "new york" all meaning the same state.</p>
+
+                    <div class="code-example">
+                        <h4>Python Implementation:</h4>
+                        <pre><code class="language-python">
+# Standardize text data
+df['state'] = df['state'].str.upper()
+
+# Fix date formats
+df['date'] = pd.to_datetime(df['date'])
+
+# Standardize categories
+category_mapping = {
+    'cat1': 'Category 1',
+    'category1': 'Category 1',
+    'CAT 1': 'Category 1'
+}
+df['category'] = df['category'].replace(category_mapping)
+
+# Remove extra whitespace
+df['name'] = df['name'].str.strip()
+
+# Fix numeric data types
+df['price'] = pd.to_numeric(df['price'], errors='coerce')
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="practical-example">
+                <h2>Complete Practical Example</h2>
+                <div class="code-example">
+                    <h4>Real-world Dataset Cleaning:</h4>
+                    <pre><code class="language-python">
+import pandas as pd
+import numpy as np
+from sklearn.impute import SimpleImputer
+
+# Load messy dataset
+df = pd.read_csv('https://raw.githubusercontent.com/username/messy_data.csv')
+
+def clean_dataset(df):
+    # 1. Handle missing values
+    numeric_columns = df.select_dtypes(include=[np.number]).columns
+    categorical_columns = df.select_dtypes(exclude=[np.number]).columns
+    
+    # Numeric imputation
+    num_imputer = SimpleImputer(strategy='mean')
+    df[numeric_columns] = num_imputer.fit_transform(df[numeric_columns])
+    
+    # Categorical imputation
+    cat_imputer = SimpleImputer(strategy='most_frequent')
+    df[categorical_columns] = cat_imputer.fit_transform(df[categorical_columns])
+    
+    # 2. Remove outliers
+    for col in numeric_columns:
+        df = remove_outliers_iqr(df, col)
+    
+    # 3. Fix inconsistencies
+    df = standardize_categories(df)
+    df = fix_date_formats(df)
+    
+    return df
+
+# Example usage
+clean_df = clean_dataset(df)
+print("Cleaning complete! Dataset shape:", clean_df.shape)
+                    </code></pre>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>

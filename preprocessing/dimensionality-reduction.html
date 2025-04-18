@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensionality Reduction - Code2Data</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="../index.html">Code2Data</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../machine-learning.html">Back to ML</a></li>
+            <li><a href="categorical-encoding.html">Previous: Categorical Encoding</a></li>
+            <li><a href="feature-scaling.html">Next: Feature Selection</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <article class="preprocessing-content">
+            <h1><i class="fas fa-compress-arrows-alt"></i> Dimensionality Reduction</h1>
+            
+            <section class="intro">
+                <p>Dimensionality reduction techniques help in reducing the number of features while preserving important information. These methods are crucial for handling high-dimensional data, visualization, and improving model performance.</p>
+            </section>
+
+            <section id="pca">
+                <h2>Principal Component Analysis (PCA)</h2>
+                <p>Linear dimensionality reduction using Singular Value Decomposition to project data to a lower dimensional space.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Sample data preparation
+X = np.random.rand(100, 10)  # 100 samples, 10 features
+
+# Standardize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply PCA
+pca = PCA(n_components=3)  # Reduce to 3 dimensions
+X_pca = pca.fit_transform(X_scaled)
+
+# Explained variance ratio
+print("Explained Variance Ratio:", pca.explained_variance_ratio_)
+print("Cumulative Variance Ratio:", np.cumsum(pca.explained_variance_ratio_))
+
+# Find optimal number of components
+pca_full = PCA()
+pca_full.fit(X_scaled)
+
+# Plot explained variance ratio
+import matplotlib.pyplot as plt
+
+plt.plot(np.cumsum(pca_full.explained_variance_ratio_))
+plt.xlabel('Number of Components')
+plt.ylabel('Cumulative Explained Variance Ratio')
+plt.title('Explained Variance vs. Number of Components')
+plt.show()
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="tsne">
+                <h2>t-SNE (t-Distributed Stochastic Neighbor Embedding)</h2>
+                <p>Non-linear dimensionality reduction technique that emphasizes the preservation of local structure.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from sklearn.manifold import TSNE
+import numpy as np
+
+# Sample data
+X = np.random.rand(1000, 50)  # 1000 samples, 50 features
+
+# Apply t-SNE
+tsne = TSNE(
+    n_components=2,
+    perplexity=30,
+    n_iter=1000,
+    learning_rate='auto'
+)
+X_tsne = tsne.fit_transform(X)
+
+# Visualization
+plt.figure(figsize=(10, 8))
+plt.scatter(X_tsne[:, 0], X_tsne[:, 1])
+plt.title('t-SNE Visualization')
+plt.xlabel('First Component')
+plt.ylabel('Second Component')
+plt.show()
+
+# t-SNE with different perplexity values
+perplexities = [5, 30, 50, 100]
+fig, axes = plt.subplots(2, 2, figsize=(15, 15))
+
+for i, perplexity in enumerate(perplexities):
+    ax = axes[i//2, i%2]
+    tsne = TSNE(n_components=2, perplexity=perplexity)
+    X_tsne = tsne.fit_transform(X)
+    
+    ax.scatter(X_tsne[:, 0], X_tsne[:, 1])
+    ax.set_title(f'Perplexity: {perplexity}')
+
+plt.tight_layout()
+plt.show()
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="umap">
+                <h2>UMAP (Uniform Manifold Approximation and Projection)</h2>
+                <p>Modern dimensionality reduction technique that often provides better results than t-SNE and runs faster.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+import umap
+import numpy as np
+
+# Sample data
+X = np.random.rand(1000, 50)
+
+# Basic UMAP
+reducer = umap.UMAP()
+X_umap = reducer.fit_transform(X)
+
+# Visualization
+plt.figure(figsize=(10, 8))
+plt.scatter(X_umap[:, 0], X_umap[:, 1])
+plt.title('UMAP Projection')
+plt.show()
+
+# UMAP with different parameters
+n_neighbors_list = [5, 15, 30, 50]
+min_dist_list = [0.1, 0.25, 0.5, 0.8]
+
+fig, axes = plt.subplots(4, 4, figsize=(20, 20))
+
+for i, n_neighbors in enumerate(n_neighbors_list):
+    for j, min_dist in enumerate(min_dist_list):
+        reducer = umap.UMAP(
+            n_neighbors=n_neighbors,
+            min_dist=min_dist,
+            random_state=42
+        )
+        embedding = reducer.fit_transform(X)
+        
+        axes[i, j].scatter(embedding[:, 0], embedding[:, 1], s=5)
+        axes[i, j].set_title(f'n_neighbors={n_neighbors}, min_dist={min_dist}')
+
+plt.tight_layout()
+plt.show()
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="autoencoder">
+                <h2>Autoencoders</h2>
+                <p>Neural network-based approach for non-linear dimensionality reduction.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.models import Model
+
+# Sample data
+X = np.random.rand(1000, 50)
+
+# Define autoencoder architecture
+input_dim = X.shape[1]
+encoding_dim = 2
+
+# Encoder
+input_layer = Input(shape=(input_dim,))
+encoder = Dense(32, activation='relu')(input_layer)
+encoder = Dense(16, activation='relu')(encoder)
+encoder = Dense(encoding_dim, activation='relu')(encoder)
+
+# Decoder
+decoder = Dense(16, activation='relu')(encoder)
+decoder = Dense(32, activation='relu')(decoder)
+decoder = Dense(input_dim, activation='sigmoid')(decoder)
+
+# Autoencoder model
+autoencoder = Model(input_layer, decoder)
+autoencoder.compile(optimizer='adam', loss='mse')
+
+# Train autoencoder
+history = autoencoder.fit(
+    X, X,
+    epochs=50,
+    batch_size=32,
+    shuffle=True,
+    validation_split=0.2
+)
+
+# Create encoder model for dimensionality reduction
+encoder_model = Model(input_layer, encoder)
+X_encoded = encoder_model.predict(X)
+
+# Visualization
+plt.figure(figsize=(10, 8))
+plt.scatter(X_encoded[:, 0], X_encoded[:, 1])
+plt.title('Autoencoder Latent Space')
+plt.show()
+
+# Plot training history
+plt.figure(figsize=(10, 6))
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.title('Autoencoder Training History')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="lda">
+                <h2>Linear Discriminant Analysis (LDA)</h2>
+                <p>Supervised dimensionality reduction technique that maximizes class separability.</p>
+                <div class="code-example">
+                    <pre><code class="language-python">
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+import numpy as np
+
+# Sample data with labels
+X = np.random.rand(1000, 50)
+y = np.random.randint(0, 3, 1000)  # 3 classes
+
+# Apply LDA
+lda = LinearDiscriminantAnalysis(n_components=2)
+X_lda = lda.fit_transform(X, y)
+
+# Visualization
+plt.figure(figsize=(10, 8))
+scatter = plt.scatter(X_lda[:, 0], X_lda[:, 1], c=y, cmap='viridis')
+plt.colorbar(scatter)
+plt.title('LDA Projection')
+plt.show()
+
+# Print explained variance ratio
+print("Explained variance ratio:", lda.explained_variance_ratio_)
+                    </code></pre>
+                </div>
+            </section>
+
+            <section id="comparison">
+                <h2>Comparison of Methods</h2>
+                <table>
+                    <tr>
+                        <th>Method</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                        <th>Best Use Cases</th>
+                    </tr>
+                    <tr>
+                        <td>PCA</td>
+                        <td>
+                            <ul>
+                                <li>Fast and simple</li>
+                                <li>Linear interpretability</li>
+                                <li>No hyperparameters</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Only captures linear relationships</li>
+                                <li>Sensitive to scaling</li>
+                            </ul>
+                        </td>
+                        <td>Linear data, feature extraction, compression</td>
+                    </tr>
+                    <tr>
+                        <td>t-SNE</td>
+                        <td>
+                            <ul>
+                                <li>Preserves local structure</li>
+                                <li>Good for visualization</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Slow on large datasets</li>
+                                <li>Non-deterministic</li>
+                                <li>Cannot project new data</li>
+                            </ul>
+                        </td>
+                        <td>Visualization, cluster analysis</td>
+                    </tr>
+                    <tr>
+                        <td>UMAP</td>
+                        <td>
+                            <ul>
+                                <li>Faster than t-SNE</li>
+                                <li>Preserves global structure</li>
+                                <li>Can project new data</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Complex algorithm</li>
+                                <li>Many hyperparameters</li>
+                            </ul>
+                        </td>
+                        <td>General-purpose dimensionality reduction, visualization</td>
+                    </tr>
+                    <tr>
+                        <td>Autoencoders</td>
+                        <td>
+                            <ul>
+                                <li>Can capture complex patterns</li>
+                                <li>Flexible architecture</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Requires large training data</li>
+                                <li>Complex to tune</li>
+                            </ul>
+                        </td>
+                        <td>Complex non-linear data, deep learning applications</td>
+                    </tr>
+                    <tr>
+                        <td>LDA</td>
+                        <td>
+                            <ul>
+                                <li>Supervised learning</li>
+                                <li>Maximizes class separation</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Requires labeled data</li>
+                                <li>Assumes normal distribution</li>
+                            </ul>
+                        </td>
+                        <td>Classification tasks, supervised dimensionality reduction</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="best-practices">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Always scale your data before applying dimensionality reduction</li>
+                    <li>Choose the method based on your specific use case and data characteristics</li>
+                    <li>Consider computational resources and dataset size</li>
+                    <li>Validate the quality of the reduced representation</li>
+                    <li>Use multiple techniques for better insights</li>
+                    <li>Consider interpretability requirements</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Code2Data. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>
