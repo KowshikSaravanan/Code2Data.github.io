@@ -217,14 +217,18 @@ footer {
 
 /* Machine Learning Page Specific Styles */
 .container {
-    padding-top: 120px; /* Increased padding to ensure content starts below navbar */
+    padding-top: 120px;
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .ml-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+    position: relative;
+    z-index: 2;
 }
 
 .ml-content h1 {
@@ -314,6 +318,25 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    
+    .container {
+        padding-top: 80px; /* Reduced padding for mobile */
+    }
+
+    .ml-content {
+        padding: 1rem;
+        margin-top: 20px; /* Add space at the top */
+    }
+
+    .ml-content h1 {
+        font-size: 2rem;
+        margin-top: 20px; /* Ensure title has space at the top */
+        padding-top: 20px; /* Additional padding at the top */
+    }
+
     .nav-links {
         display: none;
     }
@@ -326,19 +349,28 @@ footer {
         font-size: 1rem;
     }
 
-    .ml-content {
-        padding: 1rem;
-    }
-
-    .ml-content h1 {
-        font-size: 2rem;
-    }
-
     .ml-content h2 {
         font-size: 1.5rem;
     }
 
     .ml-content h3 {
         font-size: 1.2rem;
+    }
+}
+
+/* Additional mobile optimization */
+@media (max-width: 480px) {
+    .container {
+        padding-top: 70px;
+    }
+
+    .ml-content h1 {
+        font-size: 1.8rem;
+        margin-top: 25px;
+        padding-top: 25px;
+    }
+
+    .ml-content {
+        padding: 0.8rem;
     }
 }
