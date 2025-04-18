@@ -221,15 +221,25 @@ footer {
 .ml-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 4rem 2rem 2rem 2rem; /* Increased top padding */
 }
 
 .ml-content h1 {
+    margin-bottom: 2rem;
     color: #2c3e50;
     font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 3px solid #3498db;
-    padding-bottom: 0.5rem;
+}
+
+.ml-content .intro {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+/* Ensure proper spacing with navbar */
+.container {
+    padding-top: 80px; /* Add space below fixed navbar */
 }
 
 .ml-content h2 {
