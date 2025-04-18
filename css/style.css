@@ -113,21 +113,38 @@ body {
 }
 
 .topic-card {
-    background: var(--white);
+    background: #fff;
     padding: 2rem;
-    border-radius: 10px;
-    text-align: center;
-    transition: transform 0.3s;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.topic-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .topic-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 .topic-card i {
     font-size: 2.5rem;
-    color: var(--primary-color);
+    color: #3498db;
     margin-bottom: 1rem;
+}
+
+.topic-card h3 {
+    margin: 1rem 0;
+    color: #2c3e50;
+}
+
+.topic-card p {
+    color: #666;
+    line-height: 1.6;
 }
 
 /* Tutorials Section */
