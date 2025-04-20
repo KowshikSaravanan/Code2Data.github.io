@@ -172,7 +172,7 @@ body {
 
 /* Footer */
 footer {
-    background: var(--text-color);
+    background: linear-gradient(135deg, rgba(5, 55, 164, 0.95), rgba(3, 83, 174, 0.95));
     color: var(--white);
     padding: 4rem 5% 2rem;
 }
@@ -195,7 +195,7 @@ footer {
 .footer-section a {
     color: var(--white);
     text-decoration: none;
-    opacity: 0.8;
+    opacity: 0.9;
     transition: opacity 0.3s;
 }
 
